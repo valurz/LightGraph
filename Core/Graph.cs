@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LightGraph.Core;
 /// <summary>
-/// Simple and lightweight bidirectional graph optimized around Dijkstra's shortest path
+/// A simple, lightweight bidirectional graph optimized around Dijkstra's shortest path 
 /// </summary>
 public class Graph
 {
