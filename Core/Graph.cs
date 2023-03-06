@@ -30,7 +30,7 @@ public class Graph
     }
 
     /// <summary>
-    ///  Add an edge between two nodes to the graph
+    ///  Add a bidirectional edge between between two nodes to the graph
     /// </summary>
     /// <param name="sourceNode">Source node</param>
     /// <param name="targetNode">Target node</param>
