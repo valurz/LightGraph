@@ -11,7 +11,7 @@ public class Graph
     private Dictionary<int, List<(int source, int target, float weight)>> _nodesAndEdges;
     private Dictionary<(int source, int target, float weight), bool> _visitedEdges;
     private Dictionary<int, float> _distances;
-    private Dictionary<int, List<(int node, float distance)>> _shortestPaths;
+    private Dictionary<int, List<(int node, float weight)>> _shortestPaths;
     private int _nrOfEdges;
 
     /// <summary>
@@ -140,7 +140,7 @@ public class Graph
             var currentNode = currentNodes.Dequeue();
             for (int an = 0; an < _nodesAndEdges[currentNode].Count; an++)
             {
-                var newDistance = shortestPaths[currentNode].Sum(l => l.distance) + _nodesAndEdges[currentNode][an].weight;
+                var newDistance = shortestPaths[currentNode].Sum(l => l.weight) + _nodesAndEdges[currentNode][an].weight;
                 var adjacentNode = _nodesAndEdges[currentNode][an].target;
                 var currentDistance = distances[adjacentNode];
                 if (!visitedEdges[_nodesAndEdges[currentNode][an]])
