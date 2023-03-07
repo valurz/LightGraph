@@ -8,8 +8,7 @@ namespace LightGraph.Core;
 /// </summary>
 public class Graph
 {
-    private Dictionary<int, List<(int source, int target, float weight)>> _nodesAndEdges;
-    private Dictionary<(int source, int target, float weight), bool> _visitedEdges;
+    private Dictionary<int, List<(int target, float weight)>> _nodesAndEdges;
     private Dictionary<int, float> _distances;
     private Dictionary<int, List<(int node, float weight)>> _shortestPaths;
     private int _nrOfEdges;
@@ -23,8 +22,7 @@ public class Graph
         if (capacity <= 0)
             throw new Exception("Capacity must be greater than 0");
 
-        _nodesAndEdges = new Dictionary<int, List<(int source, int target, float weight)>>(capacity * 2);
-        _visitedEdges = new Dictionary<(int source, int target, float weight), bool>(capacity * 2);
+        _nodesAndEdges = new Dictionary<int, List<(int target, float weight)>>(capacity * 2);
         _shortestPaths = new Dictionary<int, List<(int node, float distance)>>(capacity);
         _distances = new Dictionary<int, float>(capacity);
     }
@@ -49,30 +47,28 @@ public class Graph
 
         if (!_nodesAndEdges.ContainsKey(sourceNode))
         {
-            _nodesAndEdges.Add(sourceNode, new List<(int source, int target, float weight)>(8) { });
+            _nodesAndEdges.Add(sourceNode, new List<(int target, float weight)>(8) { });
             _distances.Add(sourceNode, int.MaxValue);
             _shortestPaths.Add(sourceNode, new List<(int, float)>(20));
         }
 
         if (!_nodesAndEdges.ContainsKey(targetNode))
         {
-            _nodesAndEdges.Add(targetNode, new List<(int source, int target, float weight)>(8) { });
+            _nodesAndEdges.Add(targetNode, new List<(int target, float weight)>(8) { });
             _distances.Add(targetNode, int.MaxValue);
             _shortestPaths.Add(targetNode, new List<(int, float)>(20));
         }
 
         if (!_nodesAndEdges[sourceNode].Any(e => e.target == targetNode))
         {
-            _nodesAndEdges[sourceNode].Add((sourceNode, targetNode, weight));
-            _visitedEdges.Add((sourceNode, targetNode, weight), false);
+            _nodesAndEdges[sourceNode].Add((targetNode, weight));
             _nodesAndEdges[sourceNode].Sort((a, b) => a.weight.CompareTo(b.weight));
             _nrOfEdges++;
         }
 
-        if (!_nodesAndEdges[targetNode].Any(e => e.source == sourceNode))
+        if (!_nodesAndEdges[targetNode].Any(e => e.target == sourceNode))
         {
-            _nodesAndEdges[targetNode].Add((targetNode, sourceNode, weight));
-            _visitedEdges.Add((targetNode, sourceNode, weight), false);
+            _nodesAndEdges[targetNode].Add((sourceNode, weight));
             _nodesAndEdges[targetNode].Sort((a, b) => a.weight.CompareTo(b.weight));
             _nrOfEdges++;
         }
@@ -94,8 +90,6 @@ public class Graph
         var edge2 = _nodesAndEdges[targetNode].Where(n => n.target == sourceNode).Single();
         _nodesAndEdges[sourceNode].Remove(edge1);
         _nodesAndEdges[targetNode].Remove(edge2);
-        _visitedEdges.Remove(edge1);
-        _visitedEdges.Remove(edge2);
     }
 
     /// <summary>
@@ -122,20 +116,19 @@ public class Graph
     /// <param name="startNode">Start node</param>
     /// <param name="endNode">End node</param>
     /// /// <returns>A list of nodes containing the shortest path and the total distance from startNode to endNode</returns>
-    public (IReadOnlyList<int> nodes, float distance) GetRoute(int startNode, int endNode)
+    public (IReadOnlyList<int> Nodes, float Distance) GetRoute(int startNode, int endNode)
     {
         var shortestPaths = _shortestPaths.ToDictionary(k => k.Key, v => v.Value);
-        var visitedEdges = _visitedEdges.ToDictionary(k => k.Key, v => v.Value);
         var distances = _distances.ToDictionary(k => k.Key, v => v.Value);
         distances[startNode] = 0;
         var currentNodes = new Queue<int>();
-        var visited = 0;
         currentNodes.Enqueue(startNode);
         for (int i = 0; i < _nodesAndEdges[startNode].Count; i++)
         {
             currentNodes.Enqueue(_nodesAndEdges[startNode][i].target);
         }
-        while (visited < _nrOfEdges)
+        var visited = 0;
+        while (visited++ < _nrOfEdges)
         {
             var currentNode = currentNodes.Dequeue();
             for (int an = 0; an < _nodesAndEdges[currentNode].Count; an++)
@@ -143,24 +136,19 @@ public class Graph
                 var newDistance = shortestPaths[currentNode].Sum(l => l.weight) + _nodesAndEdges[currentNode][an].weight;
                 var adjacentNode = _nodesAndEdges[currentNode][an].target;
                 var currentDistance = distances[adjacentNode];
-                if (!visitedEdges[_nodesAndEdges[currentNode][an]])
+                if (currentDistance > newDistance)
                 {
-                    if (currentDistance > newDistance)
+                    shortestPaths[adjacentNode].Clear();
+                    shortestPaths[adjacentNode].AddRange(shortestPaths[currentNode]);
+                    shortestPaths[adjacentNode].Add((currentNode, _nodesAndEdges[currentNode][an].weight));
+                    distances[adjacentNode] = newDistance;
+                }
+                for (int i = 0; i < _nodesAndEdges[adjacentNode].Count; i++)
+                {
+                    if (_nodesAndEdges[adjacentNode][i].target != currentNode)
                     {
-                        shortestPaths[adjacentNode].Clear();
-                        shortestPaths[adjacentNode].AddRange(shortestPaths[currentNode]);
-                        shortestPaths[adjacentNode].Add((currentNode, _nodesAndEdges[currentNode][an].weight));
-                        distances[adjacentNode] = newDistance;
+                        currentNodes.Enqueue(_nodesAndEdges[adjacentNode][i].target);
                     }
-                    for (int i = 0; i < _nodesAndEdges[adjacentNode].Count; i++)
-                    {
-                        if (_nodesAndEdges[adjacentNode][i].target != currentNode)
-                        {
-                            currentNodes.Enqueue(_nodesAndEdges[adjacentNode][i].target);
-                        }
-                    }
-                    visitedEdges[_nodesAndEdges[currentNode][an]] = true;
-                    visited++;
                 }
             }
         }
