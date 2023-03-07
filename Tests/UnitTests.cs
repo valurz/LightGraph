@@ -1,5 +1,6 @@
 namespace Tests;
 using LightGraph.Core;
+
 public class UnitTests
 {
     [Fact]
@@ -77,7 +78,7 @@ public class UnitTests
         graph.AddEdge(0, 3, 5);
         graph.AddEdge(3, 4, 5);
 
-        Assert.Equal(10, graph.GetRoute(0, 4).distance);
+        Assert.Equal(10, graph.GetRoute(0, 4).Distance);
     }
 
     [Fact]
@@ -89,7 +90,7 @@ public class UnitTests
         graph.AddEdge(2, 3);
         graph.AddEdge(2, 4, 7);
         graph.AddEdge(3, 4, 5);
-        var route = graph.GetRoute(0, 4).nodes;
+        var route = graph.GetRoute(0, 4).Nodes;
         Assert.Equal(0, route[0]);
         Assert.Equal(1, route[1]);
         Assert.Equal(2, route[2]);
@@ -109,7 +110,7 @@ public class UnitTests
         graph.AddEdge(0, 5);
         graph.AddEdge(5, 6);
         graph.AddEdge(6, 7);
-        var route = graph.GetRoute(0, 7).nodes;
+        var route = graph.GetRoute(0, 7).Nodes;
         Assert.Equal(0, route[0]);
         Assert.Equal(5, route[1]);
         Assert.Equal(6, route[2]);
@@ -128,11 +129,36 @@ public class UnitTests
         graph.AddEdge(0, 5, 600);
         graph.AddEdge(5, 6, 600);
         graph.AddEdge(6, 7, 600);
-        var route = graph.GetRoute(0, 7).nodes;
+        var route = graph.GetRoute(0, 7).Nodes;
         Assert.Equal(0, route[0]);
         Assert.Equal(5, route[1]);
         Assert.Equal(6, route[2]);
         Assert.Equal(7, route[3]);
-        Assert.Equal(1800, graph.GetRoute(0, 7).distance);
+        Assert.Equal(1800, graph.GetRoute(0, 7).Distance);
+    }
+
+    [Fact]
+    public void CheckShortestRoutePathChanged4()
+    {
+        var graph = new Graph(7);
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 3, 5);
+        graph.AddEdge(3, 4);
+        graph.AddEdge(4, 5);
+        graph.AddEdge(5, 2);
+        graph.AddEdge(1, 2);
+        graph.AddEdge(5, 6);
+        var route1Nodes = graph.GetRoute(0, 4).Nodes;
+        Assert.Equal(0, route1Nodes[0]);
+        Assert.Equal(1, route1Nodes[1]);
+        Assert.Equal(2, route1Nodes[2]);
+        Assert.Equal(5, route1Nodes[3]);
+        Assert.Equal(4, route1Nodes[4]);
+        graph.RemoveEdge(0,1);
+        graph.AddEdge(0,1,99);
+        var route2Nodes = graph.GetRoute(0, 4).Nodes;
+        Assert.Equal(0, route2Nodes[0]);
+        Assert.Equal(3, route2Nodes[1]);
+        Assert.Equal(4, route2Nodes[2]);
     }
 }
