@@ -8,14 +8,14 @@ A simple, lightweight bidirectional graph optimized around Dijkstra's shortest p
 Graph graph = new Graph(5);
 
 // Add bidirectional edges between two nodes with optional weight
-graph.Add(0,1,1);
-graph.Add(1,2,1);
-graph.Add(2,3,1);
-graph.Add(3,4,42)
-graph.Add(2,4,1);
+graph.Add(0, 1, 1);
+graph.Add(1, 2, 1);
+graph.Add(2, 3, 1);
+graph.Add(3, 4, 42)
+graph.Add(2, 4, 1);
 
 // Find shortest path between two nodes
-var route = graph.GetRoute(0,4);
+var route = graph.GetRoute(0, 4);
 
 // Do something with the route tuple
 Console.WriteLine($"Route: {string.Join(" -> ", route.Nodes)}");
