@@ -1,9 +1,7 @@
 # LightGraph
-A simple, lightweight bidirectional graph optimized around Dijkstra's shortest path.
+A simple, lightweight bidirectional graph optimized around Dijkstra's shortest path written in C#.
 
 ## Example
-All functionality is contained in a single C# class:
-
 ```csharp
 // Create with some initial capacity
 Graph graph = new Graph(5);
