@@ -11,7 +11,7 @@ Graph graph = new Graph(5);
 graph.Add(0, 1, 1);
 graph.Add(1, 2, 1);
 graph.Add(2, 3, 1);
-graph.Add(3, 4, 42)
+graph.Add(3, 4, 42);
 graph.Add(2, 4, 1);
 
 // Find shortest path between two nodes
