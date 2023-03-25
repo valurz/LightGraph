@@ -1,5 +1,5 @@
 # LightGraph
-A simple, lightweight bidirectional graph optimized around Dijkstra's shortest path written in C#.
+A simple, lightweight bidirectional graph optimized around Dijkstra's shortest path contained in a single C# class.
 
 ## Example
 ```csharp
@@ -17,8 +17,8 @@ graph.Add(2, 4, 1);
 var route = graph.GetRoute(0, 4);
 
 // Do something with the route tuple
-Console.WriteLine($"Route: {string.Join(" -> ", route.Nodes)}");
-Console.WriteLine($"Total distance: {route.Distance}");
+Console.WriteLine($"Route: {string.Join(" -> ", route.nodes)}");
+Console.WriteLine($"Total distance: {route.distance}");
 
 // Output:
 // Route: 0 -> 1 -> 2 -> 4
