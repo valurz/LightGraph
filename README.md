@@ -1,8 +1,7 @@
 # LightGraph
 A simple, lightweight bidirectional graph optimized around Dijkstra's shortest path contained in a single C# class.
 
-![example workflow](https://github.com/valurz/LightGraph/actions/workflows/dotnet.yml/badge.svg)
-
+![example workflow](https://github.com/valurz/LightGraph/actions/workflows/dotnet.yml/badge.svg) ![haha](https://img.shields.io/github/license/valurz/lightgraph)
 ## Example
 ```csharp
 // Create with some initial capacity
