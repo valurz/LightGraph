@@ -189,8 +189,6 @@ namespace LightGraph.Core
                         distances[outgoingNode] = newDistance;
                         priorityQueue.Add((outgoingNode, newDistance));
                         priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
-
-                        // TODO ability to update prio queue
                     }
                 }
             }
