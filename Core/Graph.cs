@@ -142,23 +142,24 @@ namespace LightGraph.Core
         public (IEnumerable<int> nodes, float distance) GetRoute(int startNode, int endNode)
         {
             var predecessors = new int[_nodeCapacity];
-            var currentNodes = new List<(int node, float distance)>(_edgesToNodesCapacity);
+            var priorityQueue = new List<(int node, float distance)>(_edgesToNodesCapacity);
             var distances = GetDistanceArray(_nodeCapacity, startNode);
-            currentNodes.Add((startNode, 0));
-            while (currentNodes.Count > 0)
+            priorityQueue.Add((startNode, 0));
+            while (priorityQueue.Count > 0)
             {
-                var currentNode = currentNodes[0].node;
-                currentNodes.Remove(currentNodes[0]);
-                for (int an = 0; an < _nodesAndEdges[currentNode].Count; an++)
+                var currentNode = priorityQueue[0].node;
+                if (currentNode == endNode) { break; }
+                priorityQueue.Remove(priorityQueue[0]);
+                for (int outgoingEdge = 0; outgoingEdge < _nodesAndEdges[currentNode].Count; outgoingEdge++)
                 {
-                    var adjacentNode = _nodesAndEdges[currentNode][an].target;
-                    var newDistance = distances[currentNode] + _nodesAndEdges[currentNode][an].weight;
-                    if (distances[adjacentNode] > newDistance)
+                    var outgoingNode = _nodesAndEdges[currentNode][outgoingEdge].target;
+                    var newDistance = distances[currentNode] + _nodesAndEdges[currentNode][outgoingEdge].weight;
+                    if (distances[outgoingNode] > newDistance)
                     {
-                        predecessors[adjacentNode] = currentNode;
-                        distances[adjacentNode] = newDistance;
-                        currentNodes.Add((adjacentNode, newDistance));
-                        currentNodes.Sort((k, v) => k.distance.CompareTo(v.distance));
+                        predecessors[outgoingNode] = currentNode;
+                        distances[outgoingNode] = newDistance;
+                        priorityQueue.Add((outgoingNode, newDistance));
+                        priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
                     }
                 }
             }
