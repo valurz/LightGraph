@@ -185,13 +185,12 @@ namespace LightGraph.Core
                         if (queueIndex != -1)
                         {
                             priorityQueue[queueIndex] = (outgoingNode, newDistance);
-                            priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
                         }
                         else
                         {
                             priorityQueue.Add((outgoingNode, newDistance));
-                            priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
                         }
+                        priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
                     }
                 }
             }
