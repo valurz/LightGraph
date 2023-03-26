@@ -210,4 +210,45 @@ public class GraphTests
         Assert.True(graph.IsConnected(999998, 999999));
         Assert.Equal(999999, route.distance);
     }
+
+    [Fact]
+    public void Graph_can_be_resized()
+    {
+        var graph = new Graph(42);
+
+        graph.AddEdge(0, 42);
+        graph.AddEdge(0, 78);
+        graph.AddEdge(0, 400);
+        
+        Assert.Equal(graph.Capacity, 401);
+        Assert.True(graph.IsConnected(0, 42));
+        Assert.True(graph.IsConnected(0, 78));
+    }
+
+    [Fact]
+    public void NodeCount_and_EdgeCount_matches()
+    {
+        var graph = new Graph(42);
+
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        
+        Assert.Equal(graph.NodesCount, 4);
+        Assert.Equal(graph.EdgesCount, 6);
+    }
+
+    [Fact]
+    public void NodeCount_and_EdgeCount_matches_after_removal()
+    {
+        var graph = new Graph(42);
+
+        graph.AddEdge(0, 1);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 3);
+        graph.RemoveEdge(0,1);
+        
+        Assert.Equal(graph.NodesCount, 4);
+        Assert.Equal(graph.EdgesCount, 4);
+    }
 }

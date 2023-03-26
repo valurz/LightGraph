@@ -34,6 +34,21 @@ namespace LightGraph.Core
         private List<(int target, float weight)>[] _nodesAndEdges;
         private int _nodeCapacity;
         private int _edgesToNodesCapacity;
+        private int _lastIndex;
+        private int _nrOfEdges;
+        private int _nrOfNodes;
+        /// <summary>
+        ///  The amount of nodes this graph can currently hold
+        /// </summary>
+        public int Capacity => _nodesAndEdges.Length;
+        /// <summary>
+        /// Total number of edges in the graph
+        /// </summary>
+        public int EdgesCount => _nrOfEdges;
+        /// <summary>
+        ///  Total number of nodes in the graph
+        /// </summary>
+        public int NodesCount => _nrOfNodes;
 
         /// <summary>
         /// Create a new graph with some initial capacity 
@@ -47,6 +62,7 @@ namespace LightGraph.Core
             if (edgesToNodesCapacity <= 0)
                 throw new Exception("EdgesToNodesCapacity must be greater than 0");
 
+            _lastIndex = nodeCapacity - 1;
             _nodesAndEdges = new List<(int target, float weight)>[nodeCapacity];
             _edgesToNodesCapacity = edgesToNodesCapacity;
             _nodeCapacity = nodeCapacity;
@@ -59,11 +75,19 @@ namespace LightGraph.Core
         /// <param name="targetNode">Target node</param>
         public void AddEdge(int sourceNode, int targetNode, float weight = 1.0f)
         {
-            if (sourceNode > _nodeCapacity)
-                throw new Exception("Source node index is greater than the capacity of the graph");
+            if (sourceNode > _lastIndex)
+            {
+                _nodeCapacity = sourceNode + 1;
+                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, _nodeCapacity);
+                _lastIndex = _nodeCapacity;
+            }
 
-            if (targetNode > _nodeCapacity)
-                throw new Exception("Target node index is greater than the capacity of the graph");
+            if (targetNode > _lastIndex)
+            {
+                _nodeCapacity = targetNode + 1;
+                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, _nodeCapacity);
+                _lastIndex = _nodeCapacity;
+            }
 
             if (sourceNode < 0)
                 throw new Exception("Source node must be a positive number");
@@ -79,26 +103,30 @@ namespace LightGraph.Core
             if (_nodesAndEdges[sourceNode] == null)
             {
                 _nodesAndEdges[sourceNode] = new List<(int target, float weight)>(_edgesToNodesCapacity) { };
+                _nrOfNodes++;
             }
 
             if (_nodesAndEdges[targetNode] == null)
             {
                 _nodesAndEdges[targetNode] = new List<(int target, float weight)>(_edgesToNodesCapacity) { };
+                _nrOfNodes++;
             }
 
             if (!_nodesAndEdges[sourceNode].Any(e => e.target == targetNode))
             {
                 _nodesAndEdges[sourceNode].Add((targetNode, weight));
+                _nrOfEdges++;
             }
 
             if (!_nodesAndEdges[targetNode].Any(e => e.target == sourceNode))
             {
                 _nodesAndEdges[targetNode].Add((sourceNode, weight));
+                _nrOfEdges++;
             }
         }
 
         /// <summary>
-        ///  Removes an edge between two nodes
+        ///  Removes an bidirectional edge between two nodes
         /// </summary>
         /// <param name="sourceNode">Source node</param>
         /// <param name="targetNode">Target node</param>
@@ -113,6 +141,7 @@ namespace LightGraph.Core
             var edge2 = _nodesAndEdges[targetNode].Where(n => n.target == sourceNode).Single();
             _nodesAndEdges[sourceNode].Remove(edge1);
             _nodesAndEdges[targetNode].Remove(edge2);
+            _nrOfEdges -= 2;
         }
 
         /// <summary>
