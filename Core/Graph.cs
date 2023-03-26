@@ -75,16 +75,10 @@ namespace LightGraph.Core
         /// <param name="targetNode">Target node</param>
         public void AddEdge(int sourceNode, int targetNode, float weight = 1.0f)
         {
-            if (sourceNode > _lastIndex)
+            if (sourceNode > _lastIndex || targetNode > _lastIndex)
             {
-                _nodeCapacity = sourceNode + 1;
-                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, _nodeCapacity);
-                _lastIndex = _nodeCapacity;
-            }
-
-            if (targetNode > _lastIndex)
-            {
-                _nodeCapacity = targetNode + 1;
+                var newIndex = sourceNode >= targetNode ? sourceNode + 1 : targetNode + 1;
+                _nodeCapacity = newIndex;
                 Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, _nodeCapacity);
                 _lastIndex = _nodeCapacity;
             }

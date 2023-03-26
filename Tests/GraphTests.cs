@@ -219,10 +219,12 @@ public class GraphTests
         graph.AddEdge(0, 42);
         graph.AddEdge(0, 78);
         graph.AddEdge(0, 400);
+        graph.AddEdge(900, 259);
 
-        Assert.Equal(401, graph.Capacity);
+        Assert.Equal(901, graph.Capacity);
         Assert.True(graph.IsConnected(0, 42));
         Assert.True(graph.IsConnected(0, 78));
+        Assert.True(graph.IsConnected(259, 900));
     }
 
     [Fact]
