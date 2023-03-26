@@ -77,10 +77,10 @@ namespace LightGraph.Core
         {
             if (sourceNode > _lastIndex || targetNode > _lastIndex)
             {
-                var newIndex = sourceNode >= targetNode ? sourceNode + 1 : targetNode + 1;
-                _nodeCapacity = newIndex;
-                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, _nodeCapacity);
-                _lastIndex = _nodeCapacity;
+                var newCapacity = sourceNode >= targetNode ? sourceNode + 1 : targetNode + 1;
+                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, newCapacity);
+                _nodeCapacity = newCapacity;
+                _lastIndex = newCapacity - 1;
             }
 
             if (sourceNode < 0)
