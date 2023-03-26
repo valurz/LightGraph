@@ -75,14 +75,6 @@ namespace LightGraph.Core
         /// <param name="targetNode">Target node</param>
         public void AddEdge(int sourceNode, int targetNode, float weight = 1.0f)
         {
-            if (sourceNode > _lastIndex || targetNode > _lastIndex)
-            {
-                var newCapacity = sourceNode >= targetNode ? sourceNode + 1 : targetNode + 1;
-                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, newCapacity);
-                _nodeCapacity = newCapacity;
-                _lastIndex = newCapacity - 1;
-            }
-
             if (sourceNode < 0)
                 throw new Exception("Source node cannot be a negative number");
             else if (targetNode < 0)
@@ -93,6 +85,14 @@ namespace LightGraph.Core
 
             if (weight < 0.0f)
                 throw new Exception("Weight cannot be negative");
+
+            if (sourceNode > _lastIndex || targetNode > _lastIndex)
+            {
+                var newCapacity = sourceNode >= targetNode ? sourceNode + 1 : targetNode + 1;
+                Array.Resize<List<(int target, float weight)>>(ref _nodesAndEdges, newCapacity);
+                _nodeCapacity = newCapacity;
+                _lastIndex = newCapacity - 1;
+            }
 
             if (_nodesAndEdges[sourceNode] == null)
             {
