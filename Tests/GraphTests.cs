@@ -65,7 +65,7 @@ public class GraphTests
     }
 
     [Fact]
-    public void Edge_can_be_removed()
+    public void Edges_can_be_removed()
     {
         var graph = new Graph(10000);
 
@@ -77,7 +77,7 @@ public class GraphTests
     }
 
     [Fact]
-    public void Distance_matches_in_small_graph()
+    public void Distance_is_correct_in_small_graph()
     {
         var graph = new Graph(300);
 
@@ -197,7 +197,7 @@ public class GraphTests
     }
 
     [Fact]
-    public void Large_graph_distance_matches()
+    public void Large_graph_distance_is_correct()
     {
         var graph = new Graph(1000000);
         for (int i = 0; i + 1 < 1000000; i++)
@@ -226,7 +226,7 @@ public class GraphTests
     }
 
     [Fact]
-    public void NodeCount_and_EdgeCount_matches()
+    public void NodeCount_and_EdgeCount_are_correct()
     {
         var graph = new Graph(42);
 
@@ -239,7 +239,7 @@ public class GraphTests
     }
 
     [Fact]
-    public void NodeCount_and_EdgeCount_matches_after_removal()
+    public void NodeCount_and_EdgeCount_are_correct_after_edge_removal()
     {
         var graph = new Graph(42);
 
