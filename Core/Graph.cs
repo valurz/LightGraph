@@ -90,15 +90,15 @@ namespace LightGraph.Core
             }
 
             if (sourceNode < 0)
-                throw new Exception("Source node must be a positive number");
+                throw new Exception("Source node cannot be a negative number");
             else if (targetNode < 0)
-                throw new Exception("Target node must be a positive number");
+                throw new Exception("Target node cannot be a negative number");
 
             if (sourceNode == targetNode)
-                throw new Exception("Source and target are the same");
+                throw new Exception("Source node and target node are the same");
 
-            if (weight < 1)
-                throw new Exception("Weight must be greater than 0");
+            if (weight < 0.0f)
+                throw new Exception("Weight cannot be negative");
 
             if (_nodesAndEdges[sourceNode] == null)
             {
@@ -189,6 +189,8 @@ namespace LightGraph.Core
                         distances[outgoingNode] = newDistance;
                         priorityQueue.Add((outgoingNode, newDistance));
                         priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
+
+                        // TODO ability to update prio queue
                     }
                 }
             }
