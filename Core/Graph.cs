@@ -181,8 +181,17 @@ namespace LightGraph.Core
                     {
                         predecessors[outgoingNode] = currentNode;
                         distances[outgoingNode] = newDistance;
-                        priorityQueue.Add((outgoingNode, newDistance));
-                        priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
+                        var queueIndex = priorityQueue.IndexOf(_nodesAndEdges[currentNode][outgoingEdge]);
+                        if (queueIndex != -1)
+                        {
+                            priorityQueue[queueIndex] = (outgoingNode, newDistance);
+                            priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
+                        }
+                        else
+                        {
+                            priorityQueue.Add((outgoingNode, newDistance));
+                            priorityQueue.Sort((k, v) => k.distance.CompareTo(v.distance));
+                        }
                     }
                 }
             }
