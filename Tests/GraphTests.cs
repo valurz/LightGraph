@@ -219,8 +219,8 @@ public class GraphTests
         graph.AddEdge(0, 42);
         graph.AddEdge(0, 78);
         graph.AddEdge(0, 400);
-        
-        Assert.Equal(graph.Capacity, 401);
+
+        Assert.Equal(401, graph.Capacity);
         Assert.True(graph.IsConnected(0, 42));
         Assert.True(graph.IsConnected(0, 78));
     }
@@ -233,9 +233,9 @@ public class GraphTests
         graph.AddEdge(0, 1);
         graph.AddEdge(0, 2);
         graph.AddEdge(0, 3);
-        
-        Assert.Equal(graph.NodesCount, 4);
-        Assert.Equal(graph.EdgesCount, 6);
+
+        Assert.Equal(4, graph.NodesCount);
+        Assert.Equal(6, graph.EdgesCount);
     }
 
     [Fact]
@@ -246,9 +246,9 @@ public class GraphTests
         graph.AddEdge(0, 1);
         graph.AddEdge(0, 2);
         graph.AddEdge(0, 3);
-        graph.RemoveEdge(0,1);
-        
-        Assert.Equal(graph.NodesCount, 4);
-        Assert.Equal(graph.EdgesCount, 4);
+        graph.RemoveEdge(0, 1);
+
+        Assert.Equal(4, graph.NodesCount);
+        Assert.Equal(4, graph.EdgesCount);
     }
 }
