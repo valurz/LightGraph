@@ -182,7 +182,7 @@ namespace LightGraph.Core
                     {
                         predecessors[outgoingNode] = currentNode;
                         distances[outgoingNode] = newDistance;
-                        var queueIndex = priorityQueue.IndexOf((outgoingEdge, oldDistance));
+                        var queueIndex = priorityQueue.IndexOf((outgoingNode, oldDistance));
                         if (queueIndex != -1)
                         {
                             priorityQueue[queueIndex] = (outgoingNode, newDistance);
