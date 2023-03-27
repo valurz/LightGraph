@@ -9,11 +9,11 @@ A simple, lightweight bidirectional graph optimized around Dijkstra's shortest p
 Graph graph = new Graph(5);
 
 // Add bidirectional edges between two nodes with optional weight
-graph.Add(0, 1, 1);
-graph.Add(1, 2, 1);
-graph.Add(2, 3, 1);
+graph.Add(0, 1);
+graph.Add(1, 2);
+graph.Add(2, 3);
 graph.Add(3, 4, 42);
-graph.Add(2, 4, 1);
+graph.Add(2, 4,);
 
 // Find the shortest path between two nodes
 var route = graph.GetRoute(0, 4);
