@@ -176,12 +176,13 @@ namespace LightGraph.Core
                 for (int outgoingEdge = 0; outgoingEdge < _nodesAndEdges[currentNode].Count; outgoingEdge++)
                 {
                     var outgoingNode = _nodesAndEdges[currentNode][outgoingEdge].target;
+                    var oldDistance = distances[outgoingNode];
                     var newDistance = distances[currentNode] + _nodesAndEdges[currentNode][outgoingEdge].weight;
-                    if (distances[outgoingNode] > newDistance)
+                    if (oldDistance > newDistance)
                     {
                         predecessors[outgoingNode] = currentNode;
                         distances[outgoingNode] = newDistance;
-                        var queueIndex = priorityQueue.IndexOf(_nodesAndEdges[currentNode][outgoingEdge]);
+                        var queueIndex = priorityQueue.IndexOf((outgoingEdge, oldDistance));
                         if (queueIndex != -1)
                         {
                             priorityQueue[queueIndex] = (outgoingNode, newDistance);
