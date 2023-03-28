@@ -20,7 +20,7 @@ var route = graph.GetRoute(0, 4);
 
 // Do something with the route tuple
 Console.WriteLine($"Route: {string.Join(" -> ", route.nodes)}");
-Console.WriteLine($"Total distance: {route.distance}");
+Console.WriteLine($"Distance: {route.distance}");
 
 // Output:
 // Route: 0 -> 1 -> 2 -> 4
