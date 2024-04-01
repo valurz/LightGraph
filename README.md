@@ -12,7 +12,7 @@ Graph graph = new Graph(5);
 graph.AddEdge(0, 1);
 graph.AddEdge(1, 2);
 graph.AddEdge(2, 3);
-graph.AddEdge(3, 4, 42);
+graph.AddEdge(3, 4, weight: 42);
 graph.AddEdge(2, 4);
 
 // Find the shortest path between two nodes
